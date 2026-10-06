@@ -328,29 +328,7 @@ main.cv{ padding-block:40px 80px; }
 
 /* ================= ACADEMIA ================= */
 main.academia{ padding-block:44px 80px; }
-.gate{
-  max-width:420px; margin:20px auto 0; text-align:center;
-  background:var(--bg-raised); border:1px solid var(--line); border-radius:14px;
-  padding:36px 28px; box-shadow:var(--shadow);
-}
-.gate .lock{ font-size:1.6rem; margin-bottom:6px; }
-.gate h3{ font-size:1.15rem; font-weight:600; }
-.gate p{ font-size:.85rem; margin:8px auto 18px; }
-.gate form{ display:flex; gap:8px; }
-.gate input{
-  flex:1; min-width:0; padding:10px 12px; border-radius:8px; border:1px solid var(--line);
-  background:var(--bg); color:var(--ink); font-family:'JetBrains Mono',monospace; font-size:.9rem;
-}
-.gate input:focus{ outline:2px solid var(--teal); outline-offset:1px; }
-.gate button{
-  padding:10px 16px; border-radius:8px; border:none; background:var(--teal);
-  color:#fff; font-weight:600; cursor:pointer; font-size:.85rem;
-}
-.gate button:hover{ background:var(--teal-deep); }
-.gate .err{ color:#c1502e; font-size:.78rem; margin-top:10px; min-height:1em; }
-
 .courses{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-.courses[hidden]{ display:none; }
 @media (max-width:700px){ .courses{ grid-template-columns:1fr; } }
 .course{
   background:var(--bg-raised); border:1px solid var(--line); border-radius:12px;
@@ -377,7 +355,8 @@ footer{
   border-top:1px solid var(--line); padding-block:26px 40px;
   font-size:.8rem; color:var(--ink-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
 }
-@media print{ nav.tabs, .gate button{ display:none; } }
+.aviso-clave{ margin:-10px 0 22px; font-size:.9rem; }
+@media print{ nav.tabs{ display:none; } }
 </style>
 </head>
 <body>
@@ -721,22 +700,13 @@ footer{
   <main class="wrap academia">
     <button class="backlink" data-goto="landing">← Inicio</button>
     <div class="section-head">
-      <span class="eyebrow">Academia · solo estudiantes</span>
+      <span class="eyebrow">Academia · guías de estudio</span>
       <h2>Portal de clases</h2>
     </div>
 
-    <div id="gate" class="gate">
-      <div class="lock">🔒</div>
-      <h3>Acceso con clave</h3>
-      <p>Esta sección es exclusiva para estudiantes de las materias impartidas. Solicita la clave a tu profesor.</p>
-      <form id="gateForm" autocomplete="off">
-        <input id="gateInput" type="password" placeholder="Clave de acceso" aria-label="Clave de acceso" />
-        <button type="submit">Entrar</button>
-      </form>
-      <div class="err" id="gateErr"></div>
-    </div>
+    <p class="aviso-clave">Cada guía de estudio pide la <b>clave de su materia</b>. Solicítala a tu profesor.</p>
 
-    <div id="courses" class="courses" hidden style="margin-top:6px">
+    <div id="courses" class="courses" style="margin-top:6px">
       <div class="course" style="--accent:#0e5f57">
         <h4>Modelado y Simulación Ambiental</h4>
         <div class="sched">1h lunes + 2h martes · Unidad 1–2</div>
@@ -847,31 +817,6 @@ footer{
     });
   });
 
-  // Nota: gate simple de fricción, no seguridad real.
-  var PASSCODE = 'docencia2026';
-  var gate = document.getElementById('gate');
-  var courses = document.getElementById('courses');
-  var form = document.getElementById('gateForm');
-  var input = document.getElementById('gateInput');
-  var err = document.getElementById('gateErr');
-
-  try{
-    if(sessionStorage.getItem('classroom_ok') === '1'){
-      gate.hidden = true; courses.hidden = false;
-    }
-  }catch(e){}
-
-  form.addEventListener('submit', function(ev){
-    ev.preventDefault();
-    if(input.value.trim() === PASSCODE){
-      gate.hidden = true; courses.hidden = false; err.textContent = '';
-      try{ sessionStorage.setItem('classroom_ok','1'); }catch(e){}
-    } else {
-      err.textContent = 'Clave incorrecta. Intenta de nuevo.';
-      input.value = '';
-      input.focus();
-    }
-  });
 })();
 </script>
 
